@@ -45,55 +45,72 @@ public class EvolutionaryAlgorithm {
 
 
     public int[][] optimize(int[][] population) throws EvolutionaryAlgorithmException {
-
-        if (population != null && population.length  > 0 ) {
-            // Creamos una nueva población para los descendientes
-            int[][] offspringPopulation = new int[population.length][population[0].length];
-
-            // Aplicamos operadores de selección y cruce para generar descendientes
-            for (int i = 0; i < population.length; i += 2) {
-                // Seleccionamos dos individuos de la población actual
-                int[] parent1 = selectionOperator.select(population[i]);
-                int[] parent2 = selectionOperator.select(population[i + 1]);
-               
-                // Aplicamos el operador de cruce para generar dos descendientes
-                int[][] offspring = crossoverOperator.crossover(parent1, parent2);
-                offspringPopulation[i] = offspring[0];
-                offspringPopulation[i + 1] = offspring[1];
-            }
-
-            // Aplicamos operador de mutación a los descendientes
-            for (int i = 0; i < offspringPopulation.length; i++) {
-                offspringPopulation[i] = mutationOperator.mutate(offspringPopulation[i]);
-            }
-
-            // Reemplazo
-            for (int i = 0; i < population.length; i++) {
-                if (better(offspringPopulation[i], population[i])) {
-                    population[i] = offspringPopulation[i];
-                }
-            }
-        } else {
-            throw new EvolutionaryAlgorithmException("Poblacion no valida");
+        // Validación inicial
+        if (population == null || population.length == 0) {
+            throw new EvolutionaryAlgorithmException("Población no válida: es nula o vacía.");
         }
+    
+        if (population.length % 2 != 0) {
+            throw new EvolutionaryAlgorithmException("La población debe tener un tamaño par para aplicar cruces por parejas.");
+        }
+    
+        int[][] offspringPopulation = new int[population.length][population[0].length];
+    
+        // Selección y cruce
+        for (int i = 0; i < population.length; i += 2) {
+            int[] parent1 = selectionOperator.select(population[i]);
+            int[] parent2 = selectionOperator.select(population[i + 1]);
+    
+            if (parent1 == null || parent2 == null) {
+                throw new EvolutionaryAlgorithmException("Uno de los padres seleccionados es nulo.");
+            }
+    
+            int[][] offspring = crossoverOperator.crossover(parent1, parent2);
+    
+            if (offspring == null || offspring.length < 2 || offspring[0] == null || offspring[1] == null) {
+                throw new EvolutionaryAlgorithmException("El operador de cruce no generó dos descendientes válidos.");
+            }
+    
+            offspringPopulation[i] = offspring[0];
+            offspringPopulation[i + 1] = offspring[1];
+        }
+    
+        // Mutación
+        for (int i = 0; i < offspringPopulation.length; i++) {
+            int[] mutated = mutationOperator.mutate(offspringPopulation[i]);
+            if (mutated == null) {
+                throw new EvolutionaryAlgorithmException("El operador de mutación devolvió un individuo nulo.");
+            }
+            offspringPopulation[i] = mutated;
+        }
+    
+        // Reemplazo basado en fitness
+        for (int i = 0; i < population.length; i++) {
+            if (better(offspringPopulation[i], population[i])) {
+                population[i] = offspringPopulation[i];
+            }
+        }
+    
         return population;
     }
 
-    /*
-     * Método que calcula que población tiene mejor calidad o fitness, que en este
-     * caso se ha establecido
-     * como el que tiene menor suma de sus elementos
-     */
-    private boolean better(int[] population1, int[] population2) {
-        int suma1 = 0;
-        int suma2 = 0;
-        if (population1 != null && population2 != null && population1.length == population2.length) {
-            for (int i = 0; i < population1.length; i++) {
-                suma1 += population1[i];
-                suma2 += population2[i];
-            }
-        }
-        return suma1 < suma2;
+    /**
+ * Compara dos individuos según la suma de sus genes.
+ * Retorna true si el primer individuo tiene mejor fitness (menor suma).
+ */
+private boolean better(int[] individual1, int[] individual2) {
+    if (individual1 == null || individual2 == null || individual1.length != individual2.length) {
+        return false;
     }
+
+    int sum1 = 0, sum2 = 0;
+    for (int i = 0; i < individual1.length; i++) {
+        sum1 += individual1[i];
+        sum2 += individual2[i];
+    }
+    return sum1 < sum2;
+}
+
+    
 
 }
