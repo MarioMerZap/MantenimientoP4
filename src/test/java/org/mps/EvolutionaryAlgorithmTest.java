@@ -11,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class EvolutionaryAlgorithmTest {
+    
 
     private EvolutionaryAlgorithm algorithm;
     private SelectionOperator selectionOperator;

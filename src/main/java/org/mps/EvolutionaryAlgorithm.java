@@ -43,6 +43,7 @@ public class EvolutionaryAlgorithm {
         this.crossoverOperator = crossoverOperator;
     }
 
+    
 
     public int[][] optimize(int[][] population) throws EvolutionaryAlgorithmException {
 
