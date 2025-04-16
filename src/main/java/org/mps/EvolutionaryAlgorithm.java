@@ -45,52 +45,41 @@ public class EvolutionaryAlgorithm {
 
 
     public int[][] optimize(int[][] population) throws EvolutionaryAlgorithmException {
-        // Validación inicial
-        if (population == null || population.length == 0) {
-            throw new EvolutionaryAlgorithmException("Población no válida: es nula o vacía.");
-        }
-    
-        if (population.length % 2 != 0) {
-            throw new EvolutionaryAlgorithmException("La población debe tener un tamaño par para aplicar cruces por parejas.");
-        }
-    
-        int[][] offspringPopulation = new int[population.length][population[0].length];
-    
-        // Selección y cruce
-        for (int i = 0; i < population.length; i += 2) {
-            int[] parent1 = selectionOperator.select(population[i]);
-            int[] parent2 = selectionOperator.select(population[i + 1]);
-    
-            if (parent1 == null || parent2 == null) {
-                throw new EvolutionaryAlgorithmException("Uno de los padres seleccionados es nulo.");
+
+        if (population != null && population.length  > 0 ) {
+            // Creamos una nueva población para los descendientes
+            int[][] offspringPopulation = new int[population.length][population[0].length];
+
+            // Aplicamos operadores de selección y cruce para generar descendientes
+            for (int i = 0; i < population.length; i += 2) {
+                // Seleccionamos dos individuos de la población actual
+                if(population.length < 2){
+                      throw new EvolutionaryAlgorithmException("Poblacion menor a 2 personas");
+                }else{
+                int[] parent1 = selectionOperator.select(population[i]);
+                int[] parent2 = selectionOperator.select(population[i + 1]);
+               
+                // Aplicamos el operador de cruce para generar dos descendientes
+                int[][] offspring = crossoverOperator.crossover(parent1, parent2);
+                offspringPopulation[i] = offspring[0];
+                offspringPopulation[i + 1] = offspring[1];
+                }
             }
-    
-            int[][] offspring = crossoverOperator.crossover(parent1, parent2);
-    
-            if (offspring == null || offspring.length < 2 || offspring[0] == null || offspring[1] == null) {
-                throw new EvolutionaryAlgorithmException("El operador de cruce no generó dos descendientes válidos.");
+
+            // Aplicamos operador de mutación a los descendientes
+            for (int i = 0; i < offspringPopulation.length; i++) {
+                offspringPopulation[i] = mutationOperator.mutate(offspringPopulation[i]);
             }
-    
-            offspringPopulation[i] = offspring[0];
-            offspringPopulation[i + 1] = offspring[1];
-        }
-    
-        // Mutación
-        for (int i = 0; i < offspringPopulation.length; i++) {
-            int[] mutated = mutationOperator.mutate(offspringPopulation[i]);
-            if (mutated == null) {
-                throw new EvolutionaryAlgorithmException("El operador de mutación devolvió un individuo nulo.");
+
+            // Reemplazo
+            for (int i = 0; i < population.length; i++) {
+                if (better(offspringPopulation[i], population[i])) {
+                    population[i] = offspringPopulation[i];
+                }
             }
-            offspringPopulation[i] = mutated;
+        } else {
+            throw new EvolutionaryAlgorithmException("Poblacion no valida");
         }
-    
-        // Reemplazo basado en fitness
-        for (int i = 0; i < population.length; i++) {
-            if (better(offspringPopulation[i], population[i])) {
-                population[i] = offspringPopulation[i];
-            }
-        }
-    
         return population;
     }
 
