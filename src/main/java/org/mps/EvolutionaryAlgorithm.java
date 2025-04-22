@@ -47,40 +47,63 @@ public class EvolutionaryAlgorithm {
 
     public int[][] optimize(int[][] population) throws EvolutionaryAlgorithmException {
 
-        if (population != null && population.length  > 0 ) {
-            // Creamos una nueva población para los descendientes
-            int[][] offspringPopulation = new int[population.length][population[0].length];
-
-            // Aplicamos operadores de selección y cruce para generar descendientes
-            for (int i = 0; i < population.length; i += 2) {
-                // Seleccionamos dos individuos de la población actual
-                if(population.length < 2){
-                      throw new EvolutionaryAlgorithmException("Poblacion menor a 2 personas");
-                }else{
-                int[] parent1 = selectionOperator.select(population[i]);
-                int[] parent2 = selectionOperator.select(population[i + 1]);
-               
-                // Aplicamos el operador de cruce para generar dos descendientes
-                int[][] offspring = crossoverOperator.crossover(parent1, parent2);
-                offspringPopulation[i] = offspring[0];
-                offspringPopulation[i + 1] = offspring[1];
-                }
-            }
-
-            // Aplicamos operador de mutación a los descendientes
-            for (int i = 0; i < offspringPopulation.length; i++) {
-                offspringPopulation[i] = mutationOperator.mutate(offspringPopulation[i]);
-            }
-
-            // Reemplazo
-            for (int i = 0; i < population.length; i++) {
-                if (better(offspringPopulation[i], population[i])) {
-                    population[i] = offspringPopulation[i];
-                }
-            }
-        } else {
+        if (population == null || population.length == 0) {
             throw new EvolutionaryAlgorithmException("Poblacion no valida");
         }
+        if (population[0] == null) {
+             throw new EvolutionaryAlgorithmException("El primer individuo de la población es nulo.");
+        }
+        if (population.length < 2) {
+            throw new EvolutionaryAlgorithmException("Poblacion menor a 2 personas");
+        }
+        if (population.length % 2 != 0) {
+            throw new EvolutionaryAlgorithmException("La población debe tener un tamaño par para aplicar cruces por parejas.");
+        }
+
+        int[][] offspringPopulation = new int[population.length][population[0].length];
+    
+        // Aplicamos operadores de selección y cruce para generar descendientes
+        for (int i = 0; i < population.length; i += 2) { // Bucle seguro por validación de tamaño par
+    
+            int[] parent1 = selectionOperator.select(population[i]);
+            int[] parent2 = selectionOperator.select(population[i + 1]);
+    
+            // Validación de padres nulos añadida
+            if (parent1 == null || parent2 == null) {
+                throw new EvolutionaryAlgorithmException("Padre seleccionado es nulo.");
+            }
+    
+            // Aplicamos el operador de cruce para generar dos descendientes
+            int[][] offspring = crossoverOperator.crossover(parent1, parent2);
+    
+            // Validación de resultado de cruce añadida
+            if (offspring == null || offspring.length != 2 || offspring[0] == null || offspring[1] == null) {
+                throw new EvolutionaryAlgorithmException("Resultado de cruce inválido.");
+            }
+    
+            offspringPopulation[i] = offspring[0];
+            offspringPopulation[i + 1] = offspring[1];
+        }
+    
+        // Aplicamos operador de mutación a los descendientes
+        for (int i = 0; i < offspringPopulation.length; i++) {
+            int[] mutatedOffspring = mutationOperator.mutate(offspringPopulation[i]); // Guardar resultado temporalmente
+            // Validación de resultado de mutación añadida
+            if (mutatedOffspring == null) {
+                throw new EvolutionaryAlgorithmException("Resultado de mutación nulo.");
+            }
+            offspringPopulation[i] = mutatedOffspring; // Asignar resultado validado
+        }
+    
+        // Reemplazo utilizando el método 'better' existente
+        for (int i = 0; i < population.length; i++) {
+            // Llama directamente a better para comparar el descendiente final con el padre original
+            // Se asume que better maneja internamente (o devuelve false) si los individuos son nulos o de longitudes diferentes
+            if (better(offspringPopulation[i], population[i])) {
+                population[i] = offspringPopulation[i];
+            }
+        }
+    
         return population;
     }
 
@@ -88,7 +111,7 @@ public class EvolutionaryAlgorithm {
  * Compara dos individuos según la suma de sus genes.
  * Retorna true si el primer individuo tiene mejor fitness (menor suma).
  */
-private boolean better(int[] individual1, int[] individual2) {
+public boolean better(int[] individual1, int[] individual2) {
     if (individual1 == null || individual2 == null || individual1.length != individual2.length) {
         return false;
     }

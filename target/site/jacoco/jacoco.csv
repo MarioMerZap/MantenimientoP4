@@ -2,5 +2,5 @@ GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_
 mps4,org.mps.mutation,GaussianMutation,74,0,8,0,17,0,7,0,3,0
 mps4,org.mps.crossover,TwoPointCrossover,128,0,14,0,20,0,9,0,2,0
 mps4,org.mps,EvolutionaryAlgorithmException,3,4,0,0,2,2,1,1,1,1
-mps4,org.mps,EvolutionaryAlgorithm,8,208,12,32,2,36,12,13,0,3
+mps4,org.mps,EvolutionaryAlgorithm,2,232,8,40,0,42,8,19,0,3
 mps4,org.mps.selection,TournamentSelection,79,0,16,0,17,0,10,0,2,0

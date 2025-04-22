@@ -33,82 +33,95 @@ public class EvolutionaryAlgorithm {
     private MutationOperator mutationOperator;
     private CrossoverOperator crossoverOperator;
 
-    public EvolutionaryAlgorithm(SelectionOperator selectionOperator, MutationOperator mutationOperator,
-<span class="fc" id="L37">            CrossoverOperator crossoverOperator) throws EvolutionaryAlgorithmException {</span>
-<span class="pc bpc" id="L38" title="3 of 6 branches missed.">        if (selectionOperator == null || mutationOperator == null || crossoverOperator == null) {</span>
-<span class="nc" id="L39">            throw new EvolutionaryAlgorithmException(&quot;Argumentos nulos&quot;);</span>
+<span class="fc" id="L36">    public EvolutionaryAlgorithm(SelectionOperator selectionOperator, MutationOperator mutationOperator,</span>
+            CrossoverOperator crossoverOperator) throws EvolutionaryAlgorithmException {
+<span class="fc bfc" id="L38" title="All 6 branches covered.">        if (selectionOperator == null || mutationOperator == null || crossoverOperator == null) {</span>
+<span class="fc" id="L39">            throw new EvolutionaryAlgorithmException(&quot;Argumentos nulos&quot;);</span>
         }
 <span class="fc" id="L41">        this.selectionOperator = selectionOperator;</span>
 <span class="fc" id="L42">        this.mutationOperator = mutationOperator;</span>
 <span class="fc" id="L43">        this.crossoverOperator = crossoverOperator;</span>
 <span class="fc" id="L44">    }</span>
 
+    
 
     public int[][] optimize(int[][] population) throws EvolutionaryAlgorithmException {
-        // Validación inicial
-<span class="fc bfc" id="L49" title="All 4 branches covered.">        if (population == null || population.length == 0) {</span>
-<span class="fc" id="L50">            throw new EvolutionaryAlgorithmException(&quot;Población no válida: es nula o vacía.&quot;);</span>
+
+<span class="fc bfc" id="L50" title="All 4 branches covered.">        if (population == null || population.length == 0) {</span>
+<span class="fc" id="L51">            throw new EvolutionaryAlgorithmException(&quot;Poblacion no valida&quot;);</span>
         }
-    
-<span class="fc bfc" id="L53" title="All 2 branches covered.">        if (population.length % 2 != 0) {</span>
-<span class="fc" id="L54">            throw new EvolutionaryAlgorithmException(&quot;La población debe tener un tamaño par para aplicar cruces por parejas.&quot;);</span>
+<span class="fc bfc" id="L53" title="All 2 branches covered.">        if (population[0] == null) {</span>
+<span class="fc" id="L54">             throw new EvolutionaryAlgorithmException(&quot;El primer individuo de la población es nulo.&quot;);</span>
         }
+<span class="fc bfc" id="L56" title="All 2 branches covered.">        if (population.length &lt; 2) {</span>
+<span class="fc" id="L57">            throw new EvolutionaryAlgorithmException(&quot;Poblacion menor a 2 personas&quot;);</span>
+        }
+<span class="fc bfc" id="L59" title="All 2 branches covered.">        if (population.length % 2 != 0) {</span>
+<span class="fc" id="L60">            throw new EvolutionaryAlgorithmException(&quot;La población debe tener un tamaño par para aplicar cruces por parejas.&quot;);</span>
+        }
+
+<span class="fc" id="L63">        int[][] offspringPopulation = new int[population.length][population[0].length];</span>
     
-<span class="fc" id="L57">        int[][] offspringPopulation = new int[population.length][population[0].length];</span>
+        // Aplicamos operadores de selección y cruce para generar descendientes
+<span class="fc bfc" id="L66" title="All 2 branches covered.">        for (int i = 0; i &lt; population.length; i += 2) { // Bucle seguro por validación de tamaño par</span>
     
-        // Selección y cruce
-<span class="fc bfc" id="L60" title="All 2 branches covered.">        for (int i = 0; i &lt; population.length; i += 2) {</span>
-<span class="fc" id="L61">            int[] parent1 = selectionOperator.select(population[i]);</span>
-<span class="fc" id="L62">            int[] parent2 = selectionOperator.select(population[i + 1]);</span>
+<span class="fc" id="L68">            int[] parent1 = selectionOperator.select(population[i]);</span>
+<span class="fc" id="L69">            int[] parent2 = selectionOperator.select(population[i + 1]);</span>
     
-<span class="pc bpc" id="L64" title="1 of 4 branches missed.">            if (parent1 == null || parent2 == null) {</span>
-<span class="fc" id="L65">                throw new EvolutionaryAlgorithmException(&quot;Uno de los padres seleccionados es nulo.&quot;);</span>
+            // Validación de padres nulos añadida
+<span class="pc bpc" id="L72" title="1 of 4 branches missed.">            if (parent1 == null || parent2 == null) {</span>
+<span class="fc" id="L73">                throw new EvolutionaryAlgorithmException(&quot;Padre seleccionado es nulo.&quot;);</span>
             }
     
-<span class="fc" id="L68">            int[][] offspring = crossoverOperator.crossover(parent1, parent2);</span>
+            // Aplicamos el operador de cruce para generar dos descendientes
+<span class="fc" id="L77">            int[][] offspring = crossoverOperator.crossover(parent1, parent2);</span>
     
-<span class="pc bpc" id="L70" title="3 of 8 branches missed.">            if (offspring == null || offspring.length &lt; 2 || offspring[0] == null || offspring[1] == null) {</span>
-<span class="fc" id="L71">                throw new EvolutionaryAlgorithmException(&quot;El operador de cruce no generó dos descendientes válidos.&quot;);</span>
+            // Validación de resultado de cruce añadida
+<span class="pc bpc" id="L80" title="3 of 8 branches missed.">            if (offspring == null || offspring.length != 2 || offspring[0] == null || offspring[1] == null) {</span>
+<span class="fc" id="L81">                throw new EvolutionaryAlgorithmException(&quot;Resultado de cruce inválido.&quot;);</span>
             }
     
-<span class="fc" id="L74">            offspringPopulation[i] = offspring[0];</span>
-<span class="fc" id="L75">            offspringPopulation[i + 1] = offspring[1];</span>
+<span class="fc" id="L84">            offspringPopulation[i] = offspring[0];</span>
+<span class="fc" id="L85">            offspringPopulation[i + 1] = offspring[1];</span>
         }
     
-        // Mutación
-<span class="fc bfc" id="L79" title="All 2 branches covered.">        for (int i = 0; i &lt; offspringPopulation.length; i++) {</span>
-<span class="fc" id="L80">            int[] mutated = mutationOperator.mutate(offspringPopulation[i]);</span>
-<span class="fc bfc" id="L81" title="All 2 branches covered.">            if (mutated == null) {</span>
-<span class="fc" id="L82">                throw new EvolutionaryAlgorithmException(&quot;El operador de mutación devolvió un individuo nulo.&quot;);</span>
+        // Aplicamos operador de mutación a los descendientes
+<span class="fc bfc" id="L89" title="All 2 branches covered.">        for (int i = 0; i &lt; offspringPopulation.length; i++) {</span>
+<span class="fc" id="L90">            int[] mutatedOffspring = mutationOperator.mutate(offspringPopulation[i]); // Guardar resultado temporalmente</span>
+            // Validación de resultado de mutación añadida
+<span class="fc bfc" id="L92" title="All 2 branches covered.">            if (mutatedOffspring == null) {</span>
+<span class="fc" id="L93">                throw new EvolutionaryAlgorithmException(&quot;Resultado de mutación nulo.&quot;);</span>
             }
-<span class="fc" id="L84">            offspringPopulation[i] = mutated;</span>
+<span class="fc" id="L95">            offspringPopulation[i] = mutatedOffspring; // Asignar resultado validado</span>
         }
     
-        // Reemplazo basado en fitness
-<span class="fc bfc" id="L88" title="All 2 branches covered.">        for (int i = 0; i &lt; population.length; i++) {</span>
-<span class="pc bpc" id="L89" title="1 of 2 branches missed.">            if (better(offspringPopulation[i], population[i])) {</span>
-<span class="fc" id="L90">                population[i] = offspringPopulation[i];</span>
+        // Reemplazo utilizando el método 'better' existente
+<span class="fc bfc" id="L99" title="All 2 branches covered.">        for (int i = 0; i &lt; population.length; i++) {</span>
+            // Llama directamente a better para comparar el descendiente final con el padre original
+            // Se asume que better maneja internamente (o devuelve false) si los individuos son nulos o de longitudes diferentes
+<span class="pc bpc" id="L102" title="1 of 2 branches missed.">            if (better(offspringPopulation[i], population[i])) {</span>
+<span class="fc" id="L103">                population[i] = offspringPopulation[i];</span>
             }
         }
     
-<span class="fc" id="L94">        return population;</span>
+<span class="fc" id="L107">        return population;</span>
     }
 
     /**
  * Compara dos individuos según la suma de sus genes.
  * Retorna true si el primer individuo tiene mejor fitness (menor suma).
  */
-private boolean better(int[] individual1, int[] individual2) {
-<span class="pc bpc" id="L102" title="3 of 6 branches missed.">    if (individual1 == null || individual2 == null || individual1.length != individual2.length) {</span>
-<span class="nc" id="L103">        return false;</span>
+public boolean better(int[] individual1, int[] individual2) {
+<span class="pc bpc" id="L115" title="2 of 6 branches missed.">    if (individual1 == null || individual2 == null || individual1.length != individual2.length) {</span>
+<span class="fc" id="L116">        return false;</span>
     }
 
-<span class="fc" id="L106">    int sum1 = 0, sum2 = 0;</span>
-<span class="fc bfc" id="L107" title="All 2 branches covered.">    for (int i = 0; i &lt; individual1.length; i++) {</span>
-<span class="fc" id="L108">        sum1 += individual1[i];</span>
-<span class="fc" id="L109">        sum2 += individual2[i];</span>
+<span class="fc" id="L119">    int sum1 = 0, sum2 = 0;</span>
+<span class="fc bfc" id="L120" title="All 2 branches covered.">    for (int i = 0; i &lt; individual1.length; i++) {</span>
+<span class="fc" id="L121">        sum1 += individual1[i];</span>
+<span class="fc" id="L122">        sum2 += individual2[i];</span>
     }
-<span class="pc bpc" id="L111" title="1 of 2 branches missed.">    return sum1 &lt; sum2;</span>
+<span class="pc bpc" id="L124" title="1 of 2 branches missed.">    return sum1 &lt; sum2;</span>
 }
 
     
