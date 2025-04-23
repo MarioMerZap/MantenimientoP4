@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
-Test set: org.mps.EvolutionaryAlgorithmTest
+Test set: org.mps.GaussianMutationTest
 -------------------------------------------------------------------------------
-Tests run: 26, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.321 s -- in org.mps.EvolutionaryAlgorithmTest
+Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.017 s -- in org.mps.GaussianMutationTest

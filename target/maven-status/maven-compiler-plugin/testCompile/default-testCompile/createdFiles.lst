@@ -1,2 +1,3 @@
-org\mps\SelectionOperatorTest.class
-org\mps\EvolutionaryAlgorithmTest.class
+org\mps\TournamentSelectionTest.class
+org\mps\GaussianMutationTest.class
+org\mps\TwoPointCrossoverTest.class

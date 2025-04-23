@@ -33,8 +33,8 @@ public class EvolutionaryAlgorithm {
     private MutationOperator mutationOperator;
     private CrossoverOperator crossoverOperator;
 
-<span class="fc" id="L36">    public EvolutionaryAlgorithm(SelectionOperator selectionOperator, MutationOperator mutationOperator,</span>
-            CrossoverOperator crossoverOperator) throws EvolutionaryAlgorithmException {
+    public EvolutionaryAlgorithm(SelectionOperator selectionOperator, MutationOperator mutationOperator,
+<span class="fc" id="L37">            CrossoverOperator crossoverOperator) throws EvolutionaryAlgorithmException {</span>
 <span class="fc bfc" id="L38" title="All 6 branches covered.">        if (selectionOperator == null || mutationOperator == null || crossoverOperator == null) {</span>
 <span class="fc" id="L39">            throw new EvolutionaryAlgorithmException(&quot;Argumentos nulos&quot;);</span>
         }
@@ -69,7 +69,7 @@ public class EvolutionaryAlgorithm {
 <span class="fc" id="L69">            int[] parent2 = selectionOperator.select(population[i + 1]);</span>
     
             // Validación de padres nulos añadida
-<span class="pc bpc" id="L72" title="1 of 4 branches missed.">            if (parent1 == null || parent2 == null) {</span>
+<span class="fc bfc" id="L72" title="All 4 branches covered.">            if (parent1 == null || parent2 == null) {</span>
 <span class="fc" id="L73">                throw new EvolutionaryAlgorithmException(&quot;Padre seleccionado es nulo.&quot;);</span>
             }
     
@@ -77,7 +77,7 @@ public class EvolutionaryAlgorithm {
 <span class="fc" id="L77">            int[][] offspring = crossoverOperator.crossover(parent1, parent2);</span>
     
             // Validación de resultado de cruce añadida
-<span class="pc bpc" id="L80" title="3 of 8 branches missed.">            if (offspring == null || offspring.length != 2 || offspring[0] == null || offspring[1] == null) {</span>
+<span class="fc bfc" id="L80" title="All 8 branches covered.">            if (offspring == null || offspring.length != 2 || offspring[0] == null || offspring[1] == null) {</span>
 <span class="fc" id="L81">                throw new EvolutionaryAlgorithmException(&quot;Resultado de cruce inválido.&quot;);</span>
             }
     
@@ -99,7 +99,7 @@ public class EvolutionaryAlgorithm {
 <span class="fc bfc" id="L99" title="All 2 branches covered.">        for (int i = 0; i &lt; population.length; i++) {</span>
             // Llama directamente a better para comparar el descendiente final con el padre original
             // Se asume que better maneja internamente (o devuelve false) si los individuos son nulos o de longitudes diferentes
-<span class="pc bpc" id="L102" title="1 of 2 branches missed.">            if (better(offspringPopulation[i], population[i])) {</span>
+<span class="fc bfc" id="L102" title="All 2 branches covered.">            if (better(offspringPopulation[i], population[i])) {</span>
 <span class="fc" id="L103">                population[i] = offspringPopulation[i];</span>
             }
         }
@@ -112,7 +112,7 @@ public class EvolutionaryAlgorithm {
  * Retorna true si el primer individuo tiene mejor fitness (menor suma).
  */
 public boolean better(int[] individual1, int[] individual2) {
-<span class="pc bpc" id="L115" title="2 of 6 branches missed.">    if (individual1 == null || individual2 == null || individual1.length != individual2.length) {</span>
+<span class="fc bfc" id="L115" title="All 6 branches covered.">    if (individual1 == null || individual2 == null || individual1.length != individual2.length) {</span>
 <span class="fc" id="L116">        return false;</span>
     }
 
@@ -121,7 +121,7 @@ public boolean better(int[] individual1, int[] individual2) {
 <span class="fc" id="L121">        sum1 += individual1[i];</span>
 <span class="fc" id="L122">        sum2 += individual2[i];</span>
     }
-<span class="pc bpc" id="L124" title="1 of 2 branches missed.">    return sum1 &lt; sum2;</span>
+<span class="fc bfc" id="L124" title="All 2 branches covered.">    return sum1 &lt; sum2;</span>
 }
 
     

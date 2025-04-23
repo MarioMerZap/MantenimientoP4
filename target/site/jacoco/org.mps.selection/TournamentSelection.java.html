@@ -22,36 +22,36 @@ import org.mps.EvolutionaryAlgorithmException;
  */
 
 public class TournamentSelection implements SelectionOperator {
-<span class="nc" id="L25">    private Random random = new Random();</span>
+<span class="fc" id="L25">    private Random random = new Random();</span>
     private int tournamentSize;
 
-<span class="nc" id="L28">    public TournamentSelection(int tournamentSize) throws EvolutionaryAlgorithmException {</span>
-<span class="nc bnc" id="L29" title="All 2 branches missed.">        if (tournamentSize &gt; 0)</span>
-<span class="nc" id="L30">            this.tournamentSize = tournamentSize;</span>
+<span class="fc" id="L28">    public TournamentSelection(int tournamentSize) throws EvolutionaryAlgorithmException {</span>
+<span class="fc bfc" id="L29" title="All 2 branches covered.">        if (tournamentSize &gt; 0)</span>
+<span class="fc" id="L30">            this.tournamentSize = tournamentSize;</span>
         else
-<span class="nc" id="L32">            throw new EvolutionaryAlgorithmException(&quot;El tamanyo del torneo debe ser mayor que cero&quot;);</span>
+<span class="fc" id="L32">            throw new EvolutionaryAlgorithmException(&quot;El tamanyo del torneo debe ser mayor que cero&quot;);</span>
 
-<span class="nc" id="L34">    }</span>
+<span class="fc" id="L34">    }</span>
 
     @Override
     public int[] select(int[] population) throws EvolutionaryAlgorithmException {
         int[] selected;
-<span class="nc bnc" id="L39" title="All 6 branches missed.">        if (population != null &amp;&amp; population.length &gt; 0 &amp;&amp; population.length &gt; tournamentSize) {</span>
-<span class="nc" id="L40">            selected = new int[population.length];</span>
-<span class="nc bnc" id="L41" title="All 2 branches missed.">            for (int i = 0; i &lt; population.length; i++) {</span>
-<span class="nc" id="L42">                int best = -1;</span>
-<span class="nc bnc" id="L43" title="All 2 branches missed.">                for (int j = 0; j &lt; tournamentSize; j++) {</span>
-<span class="nc" id="L44">                    int candidate = population[random.nextInt(population.length)];</span>
-<span class="nc bnc" id="L45" title="All 4 branches missed.">                    if (best == -1 || candidate &gt; best) {</span>
-<span class="nc" id="L46">                        best = candidate;</span>
+<span class="fc bfc" id="L39" title="All 6 branches covered.">        if (population != null &amp;&amp; population.length &gt; 0 &amp;&amp; population.length &gt; tournamentSize) {</span>
+<span class="fc" id="L40">            selected = new int[population.length];</span>
+<span class="fc bfc" id="L41" title="All 2 branches covered.">            for (int i = 0; i &lt; population.length; i++) {</span>
+<span class="fc" id="L42">                int best = -1;</span>
+<span class="fc bfc" id="L43" title="All 2 branches covered.">                for (int j = 0; j &lt; tournamentSize; j++) {</span>
+<span class="fc" id="L44">                    int candidate = population[random.nextInt(population.length)];</span>
+<span class="fc bfc" id="L45" title="All 4 branches covered.">                    if (best == -1 || candidate &gt; best) {</span>
+<span class="fc" id="L46">                        best = candidate;</span>
                     }
                 }
-<span class="nc" id="L49">                selected[i] = best;</span>
+<span class="fc" id="L49">                selected[i] = best;</span>
             }
         } else {
-<span class="nc" id="L52">            throw new EvolutionaryAlgorithmException(&quot;No se ha podido realizar la selección&quot;);</span>
+<span class="fc" id="L52">            throw new EvolutionaryAlgorithmException(&quot;No se ha podido realizar la selección&quot;);</span>
         }
-<span class="nc" id="L54">        return selected;</span>
+<span class="fc" id="L54">        return selected;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

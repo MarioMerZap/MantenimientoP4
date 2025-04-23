@@ -24,32 +24,32 @@ public class GaussianMutation implements MutationOperator {
     private double mutationRate;
     private double standardDeviation;
 
-<span class="nc" id="L27">    public GaussianMutation() {</span>
-<span class="nc" id="L28">        this.random = new Random();</span>
-<span class="nc" id="L29">        this.mutationRate = 0;</span>
-<span class="nc" id="L30">        this.standardDeviation = 0;</span>
-<span class="nc" id="L31">    }</span>
+<span class="fc" id="L27">    public GaussianMutation() {</span>
+<span class="fc" id="L28">        this.random = new Random();</span>
+<span class="fc" id="L29">        this.mutationRate = 0;</span>
+<span class="fc" id="L30">        this.standardDeviation = 0;</span>
+<span class="fc" id="L31">    }</span>
 
-<span class="nc" id="L33">    public GaussianMutation(double mutationRate, double standardDeviation) {</span>
-<span class="nc" id="L34">        this.random = new Random();</span>
-<span class="nc" id="L35">        this.mutationRate = mutationRate;</span>
-<span class="nc" id="L36">        this.standardDeviation = standardDeviation;</span>
-<span class="nc" id="L37">    }</span>
+<span class="fc" id="L33">    public GaussianMutation(double mutationRate, double standardDeviation) {</span>
+<span class="fc" id="L34">        this.random = new Random();</span>
+<span class="fc" id="L35">        this.mutationRate = mutationRate;</span>
+<span class="fc" id="L36">        this.standardDeviation = standardDeviation;</span>
+<span class="fc" id="L37">    }</span>
 
     @Override
     public int[] mutate(int[] individual) throws EvolutionaryAlgorithmException {
-<span class="nc bnc" id="L41" title="All 4 branches missed.">        if (individual == null || individual.length == 0) {</span>
-<span class="nc" id="L42">            throw new EvolutionaryAlgorithmException(&quot;No se puede realizar la mutación&quot;);</span>
+<span class="fc bfc" id="L41" title="All 4 branches covered.">        if (individual == null || individual.length == 0) {</span>
+<span class="fc" id="L42">            throw new EvolutionaryAlgorithmException(&quot;No se puede realizar la mutación&quot;);</span>
         }
         
-<span class="nc" id="L45">        int[] mutatedIndividual = individual.clone();</span>
-<span class="nc bnc" id="L46" title="All 2 branches missed.">        for (int i = 0; i &lt; mutatedIndividual.length; i++) {</span>
-<span class="nc bnc" id="L47" title="All 2 branches missed.">            if (random.nextDouble() &lt; mutationRate) {</span>
-<span class="nc" id="L48">                mutatedIndividual[i] += Math.round((random.nextGaussian() * standardDeviation));</span>
+<span class="fc" id="L45">        int[] mutatedIndividual = individual.clone();</span>
+<span class="fc bfc" id="L46" title="All 2 branches covered.">        for (int i = 0; i &lt; mutatedIndividual.length; i++) {</span>
+<span class="fc bfc" id="L47" title="All 2 branches covered.">            if (random.nextDouble() &lt; mutationRate) {</span>
+<span class="fc" id="L48">                mutatedIndividual[i] += Math.round((random.nextGaussian() * standardDeviation));</span>
             }
         }
         
-<span class="nc" id="L52">        return mutatedIndividual;</span>
+<span class="fc" id="L52">        return mutatedIndividual;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
